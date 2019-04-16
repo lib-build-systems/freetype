@@ -466,14 +466,14 @@ if (NOT SKIP_INSTALL_LIBRARIES AND NOT SKIP_INSTALL_ALL)
 
   install(
     TARGETS freetype
-      EXPORT freetype
+      EXPORT freetype-targets
       LIBRARY DESTINATION ${CMAKE_INSTALL_LIBDIR}
       ARCHIVE DESTINATION ${CMAKE_INSTALL_LIBDIR}
       RUNTIME DESTINATION ${CMAKE_INSTALL_BINDIR}
       FRAMEWORK DESTINATION Library/Frameworks
       COMPONENT libraries)
   install(
-    EXPORT freetype
+    EXPORT freetype-targets
       DESTINATION ${CMAKE_INSTALL_LIBDIR}/cmake/freetype)
 endif ()
 
