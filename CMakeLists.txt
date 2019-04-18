@@ -366,52 +366,50 @@ if (BUILD_SHARED_LIBS)
 endif ()
 
 # Pick up ftconfig.h and ftoption.h generated above, first.
-target_include_directories(
-  freetype
-    PUBLIC
-      $<INSTALL_INTERFACE:include/freetype2>
-      $<BUILD_INTERFACE:${CMAKE_CURRENT_BINARY_DIR}/include>
-      $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/include>
-    PRIVATE
-      ${CMAKE_CURRENT_BINARY_DIR}/include
-      ${CMAKE_CURRENT_SOURCE_DIR}/include)
-
+target_include_directories(freetype
+                                PUBLIC
+                                    $<INSTALL_INTERFACE:include/freetype2>
+                                    $<BUILD_INTERFACE:${CMAKE_CURRENT_BINARY_DIR}/include>
+                                    $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/include>
+                                PRIVATE
+                                    ${CMAKE_CURRENT_BINARY_DIR}/include
+                                    ${CMAKE_CURRENT_SOURCE_DIR}/include
+                            )
 
 if (BUILD_FRAMEWORK)
-  set_property(SOURCE ${PUBLIC_CONFIG_HEADERS}
-    PROPERTY MACOSX_PACKAGE_LOCATION Headers/config
-  )
-  set_target_properties(freetype PROPERTIES
-    FRAMEWORK TRUE
-    MACOSX_FRAMEWORK_INFO_PLIST builds/mac/freetype-Info.plist
-    PUBLIC_HEADER "${PUBLIC_HEADERS}"
-    XCODE_ATTRIBUTE_INSTALL_PATH "@rpath"
-  )
+    set_property(SOURCE ${PUBLIC_CONFIG_HEADERS}
+                 PROPERTY MACOSX_PACKAGE_LOCATION Headers/config
+                )
+    set_target_properties(freetype PROPERTIES   FRAMEWORK TRUE
+                                                MACOSX_FRAMEWORK_INFO_PLIST builds/mac/freetype-Info.plist
+                                                PUBLIC_HEADER "${PUBLIC_HEADERS}"
+                                                XCODE_ATTRIBUTE_INSTALL_PATH "@rpath"
+                        )
 endif ()
 
 
 set(PKG_CONFIG_REQUIRED_PRIVATE "")
 
 if (ZLIB_FOUND)
-  target_link_libraries(freetype PRIVATE ${ZLIB_LIBRARIES})
-  target_include_directories(freetype PRIVATE ${ZLIB_INCLUDE_DIRS})
-  list(APPEND PKG_CONFIG_REQUIRED_PRIVATE zlib)
+    target_link_libraries(freetype PRIVATE ${ZLIB_LIBRARIES})
+    target_include_directories(freetype PRIVATE ${ZLIB_INCLUDE_DIRS})
+    list(APPEND PKG_CONFIG_REQUIRED_PRIVATE zlib)
 endif ()
 if (BZIP2_FOUND)
-  target_link_libraries(freetype PRIVATE ${BZIP2_LIBRARIES})
-  target_include_directories(freetype PRIVATE ${BZIP2_INCLUDE_DIR}) # not BZIP2_INCLUDE_DIRS
-  list(APPEND PKG_CONFIG_REQUIRED_PRIVATE bzip2)
+    target_link_libraries(freetype PRIVATE ${BZIP2_LIBRARIES})
+    target_include_directories(freetype PRIVATE ${BZIP2_INCLUDE_DIR}) # not BZIP2_INCLUDE_DIRS
+    list(APPEND PKG_CONFIG_REQUIRED_PRIVATE bzip2)
 endif ()
 if (PNG_FOUND)
-  target_link_libraries(freetype PRIVATE ${PNG_LIBRARIES})
-  target_compile_definitions(freetype PRIVATE ${PNG_DEFINITIONS})
-  target_include_directories(freetype PRIVATE ${PNG_INCLUDE_DIRS})
-  list(APPEND PKG_CONFIG_REQUIRED_PRIVATE libpng)
+    target_link_libraries(freetype PRIVATE ${PNG_LIBRARIES})
+    target_compile_definitions(freetype PRIVATE ${PNG_DEFINITIONS})
+    target_include_directories(freetype PRIVATE ${PNG_INCLUDE_DIRS})
+    list(APPEND PKG_CONFIG_REQUIRED_PRIVATE libpng)
 endif ()
 if (HARFBUZZ_FOUND)
-  target_link_libraries(freetype PRIVATE ${HARFBUZZ_LIBRARIES})
-  target_include_directories(freetype PRIVATE ${HARFBUZZ_INCLUDE_DIRS})
-  list(APPEND PKG_CONFIG_REQUIRED_PRIVATE harfbuzz)
+    target_link_libraries(freetype PRIVATE ${HARFBUZZ_LIBRARIES})
+    target_include_directories(freetype PRIVATE ${HARFBUZZ_INCLUDE_DIRS})
+    list(APPEND PKG_CONFIG_REQUIRED_PRIVATE harfbuzz)
 endif ()
 
 
@@ -419,19 +417,17 @@ endif ()
 include(GNUInstallDirs)
 
 if (NOT SKIP_INSTALL_HEADERS AND NOT SKIP_INSTALL_ALL)
-  install(
-    # Note the trailing slash in the argument to `DIRECTORY'!
-    DIRECTORY ${PROJECT_SOURCE_DIR}/include/
-      DESTINATION ${CMAKE_INSTALL_INCLUDEDIR}/freetype2
-      COMPONENT headers
-      PATTERN "internal" EXCLUDE
-      PATTERN "ftconfig.h" EXCLUDE
-      PATTERN "ftoption.h" EXCLUDE)
-  install(
-    FILES ${PROJECT_BINARY_DIR}/include/freetype/config/ftconfig.h
-          ${PROJECT_BINARY_DIR}/include/freetype/config/ftoption.h
-      DESTINATION ${CMAKE_INSTALL_INCLUDEDIR}/freetype2/freetype/config
-      COMPONENT headers)
+    install(# Note the trailing slash in the argument to `DIRECTORY'!
+            DIRECTORY ${PROJECT_SOURCE_DIR}/include/
+            DESTINATION ${CMAKE_INSTALL_INCLUDEDIR}/freetype2
+            COMPONENT headers
+            PATTERN "internal" EXCLUDE
+            PATTERN "ftconfig.h" EXCLUDE
+            PATTERN "ftoption.h" EXCLUDE)
+    install(FILES ${PROJECT_BINARY_DIR}/include/freetype/config/ftconfig.h
+                  ${PROJECT_BINARY_DIR}/include/freetype/config/ftoption.h
+            DESTINATION ${CMAKE_INSTALL_INCLUDEDIR}/freetype2/freetype/config
+            COMPONENT headers)
 endif ()
 
 if (NOT SKIP_INSTALL_LIBRARIES AND NOT SKIP_INSTALL_ALL)
@@ -458,23 +454,21 @@ if (NOT SKIP_INSTALL_LIBRARIES AND NOT SKIP_INSTALL_ALL)
 
     file(WRITE ${PROJECT_BINARY_DIR}/freetype2.pc ${FREETYPE2_PC_IN})
 
-    install(
-      FILES ${PROJECT_BINARY_DIR}/freetype2.pc
-      DESTINATION ${CMAKE_INSTALL_LIBDIR}/cmake/freetype
-      COMPONENT pkgconfig)
-  endif ()
+    install(FILES ${PROJECT_BINARY_DIR}/freetype2.pc
+            DESTINATION ${CMAKE_INSTALL_LIBDIR}/cmake/freetype
+            COMPONENT pkgconfig)
+    endif ()
 
-  install(
-    TARGETS freetype
-      EXPORT freetype-targets
-      LIBRARY DESTINATION ${CMAKE_INSTALL_LIBDIR}
-      ARCHIVE DESTINATION ${CMAKE_INSTALL_LIBDIR}
-      RUNTIME DESTINATION ${CMAKE_INSTALL_BINDIR}
-      FRAMEWORK DESTINATION Library/Frameworks
-      COMPONENT libraries)
-  install(
-    EXPORT freetype-targets
-      DESTINATION ${CMAKE_INSTALL_LIBDIR}/cmake/freetype)
+    install(TARGETS freetype
+            EXPORT freetype-targets
+            LIBRARY DESTINATION ${CMAKE_INSTALL_LIBDIR}
+            ARCHIVE DESTINATION ${CMAKE_INSTALL_LIBDIR}
+            RUNTIME DESTINATION ${CMAKE_INSTALL_BINDIR}
+            FRAMEWORK DESTINATION Library/Frameworks
+            COMPONENT libraries)
+    install(EXPORT freetype-targets
+            NAMESPACE freetype::
+            DESTINATION ${CMAKE_INSTALL_LIBDIR}/cmake/freetype)
 endif ()
 
 
