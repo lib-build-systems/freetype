@@ -642,6 +642,7 @@ if (NOT SKIP_INSTALL_LIBRARIES AND NOT SKIP_INSTALL_ALL)
   install(
     EXPORT freetype-targets
       DESTINATION ${CMAKE_INSTALL_LIBDIR}/cmake/freetype
+      NAMESPACE freetype::
       FILE freetype-targets.cmake
       COMPONENT headers)
   install(
